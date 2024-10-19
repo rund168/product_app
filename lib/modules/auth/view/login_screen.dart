@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_common/get_reset.dart';
 import 'package:product_app/modules/auth/controller/auth_controller.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -14,80 +13,118 @@ class LoginScreen extends StatelessWidget {
         backgroundColor: Color(0xFFFF5000),
         centerTitle: true,
         title: Text(
-          "Login",
+          "Taobao Khmer",
           style: TextStyle(
             color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.all(16),
-              width: double.infinity,
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                textAlign: TextAlign.center,
-                "Login",
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0),
+          child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start, // Align logo and text to the left
+            children: [
+              // App Logo
+              Image.network(
+                'https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Taobao_logo_%282021%29.svg/1200px-Taobao_logo_%282021%29.svg.png',
+                height: 50, // Adjust logo size
+              ),
+              SizedBox(height: 24),
+              // Welcome text
+              Text(
+                "Welcome Back!",
                 style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 22,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.all(16),
-              child: TextFormField(
+              SizedBox(height: 8),
+              Text(
+                "Please log in to continue",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
+              ),
+              SizedBox(height: 40),
+              // Username field
+              TextFormField(
                 controller: authController.usernameController.value,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.account_circle_rounded),
                   hintText: "Username",
                   labelText: "Username",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.all(16),
-              child: TextFormField(
+              SizedBox(height: 20),
+              // Password field
+              TextFormField(
                 controller: authController.passwordController.value,
                 obscureText: true,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock),
                   hintText: "Password",
                   labelText: "Password",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
-            ),
-            GestureDetector(
-              onTap: (){
-                authController.login();
-              },
-              child: Container(
-                padding: EdgeInsets.only(top: 15, bottom: 15),
-                width: double.infinity,
-                margin: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Color(0xFFFF5000),
-                  borderRadius: BorderRadius.all(Radius.circular(10),)
+              SizedBox(height: 12),
+              // Forgot password
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    // Add forgot password functionality
+                  },
+                  child: Text(
+                    "Forgot Password?",
+                    style: TextStyle(color: Color(0xFFFF5000)),
+                  ),
                 ),
-                child: 
-                    Obx((){
-                      if(authController.loadingLogin.value){
-                        return Center(
-                          child: CircularProgressIndicator(color: Colors.white,),
-                        );
-                      }
-                      return Text(
-                        "login".tr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 30),
+              // Old Login button (Restored)
+              GestureDetector(
+                onTap: () {
+                  authController.login();
+                },
+                child: Container(
+                  padding: EdgeInsets.only(top: 15, bottom: 15),
+                  width: double.infinity, // Take full width
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFF5000),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Obx(() {
+                    if (authController.loadingLogin.value) {
+                      return Center(
+                        child: CircularProgressIndicator(color: Colors.white),
                       );
-                    })
+                    }
+                    return Text(
+                      "Log In",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
