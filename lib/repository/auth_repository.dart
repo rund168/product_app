@@ -13,10 +13,12 @@ class AuthRepository {
     saveUserLocal(loginResponse);
     return loginResponse;
   }
+
   Future<void> saveUserLocal(LoginResponse data) async{
     var storage = GetStorage();
     storage.write("USER_KEY", data.toJson());
   }
+
   Future<LoginResponse> getUserLocal() async{
     var storage = GetStorage();
     return LoginResponse.fromJson(storage.read("USER_KEY"));

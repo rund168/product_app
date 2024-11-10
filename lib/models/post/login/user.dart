@@ -1,81 +1,64 @@
-import 'roles.dart';
-
 class User {
-  User({
-      this.createAt, 
-      this.createBy, 
-      this.updateAt, 
-      this.updateBy, 
-      this.id, 
-      this.username, 
-      this.firstName, 
-      this.lastName, 
-      this.email, 
-      this.verifyEmail, 
-      this.phoneNumber, 
-      this.status, 
-      this.profile, 
-      this.changePassword, 
-      this.roles,});
-
-  User.fromJson(dynamic json) {
-    createAt = json['createAt'];
-    createBy = json['createBy'];
-    updateAt = json['updateAt'];
-    updateBy = json['updateBy'];
-    id = json['id'];
-    username = json['username'];
-    firstName = json['firstName'];
-    lastName = json['lastName'];
-    email = json['email'];
-    verifyEmail = json['verifyEmail'];
-    phoneNumber = json['phoneNumber'];
-    status = json['status'];
-    profile = json['profile'];
-    changePassword = json['changePassword'];
-    if (json['roles'] != null) {
-      roles = [];
-      json['roles'].forEach((v) {
-        roles?.add(Roles.fromJson(v));
-      });
-    }
-  }
-  String? createAt;
-  String? createBy;
-  dynamic updateAt;
-  dynamic updateBy;
-  int? id;
-  String? username;
   String? firstName;
   String? lastName;
-  String? email;
-  dynamic verifyEmail;
+  String? username;
   String? phoneNumber;
-  String? status;
-  String? profile;
-  String? changePassword;
-  List<Roles>? roles;
+  String? email;
+  String? profile;  // Renamed to 'profile' as per your API response
+  List<Role>? roles; // Assuming the roles are a list of Role objects
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['createAt'] = createAt;
-    map['createBy'] = createBy;
-    map['updateAt'] = updateAt;
-    map['updateBy'] = updateBy;
-    map['id'] = id;
-    map['username'] = username;
-    map['firstName'] = firstName;
-    map['lastName'] = lastName;
-    map['email'] = email;
-    map['verifyEmail'] = verifyEmail;
-    map['phoneNumber'] = phoneNumber;
-    map['status'] = status;
-    map['profile'] = profile;
-    map['changePassword'] = changePassword;
-    if (roles != null) {
-      map['roles'] = roles?.map((v) => v.toJson()).toList();
+  User({
+    this.firstName,
+    this.lastName,
+    this.username,
+    this.phoneNumber,
+    this.email,
+    this.profile,
+    this.roles,
+  });
+
+  // Factory constructor to parse the JSON response
+  User.fromJson(Map<String, dynamic> json) {
+    firstName = json['firstName'];
+    lastName = json['lastName'];
+    username = json['username'];
+    phoneNumber = json['phoneNumber'];
+    email = json['email'];
+    profile = json['profile'];  // profile is used instead of profileImage
+    if (json['roles'] != null) {
+      roles = (json['roles'] as List).map((role) => Role.fromJson(role)).toList(); // Handling roles as a list
     }
-    return map;
   }
 
+  // Convert the User object to JSON for sending to the server
+  Map<String, dynamic> toJson() {
+    return {
+      'firstName': firstName,
+      'lastName': lastName,
+      'username': username,
+      'phoneNumber': phoneNumber,
+      'email': email,
+      'profile': profile, // Include profile in the output JSON
+      'roles': roles?.map((role) => role.toJson()).toList(), // Convert roles list to JSON
+    };
+  }
+}
+
+class Role {
+  int? id;
+  String? name;
+
+  Role({this.id, this.name});
+
+  Role.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
 }

@@ -2,19 +2,21 @@ import 'user.dart';
 
 class LoginRes {
   LoginRes({
-      this.accessToken, 
-      this.tokenType, 
-      this.refreshToken, 
-      this.expiresIn, 
-      this.user,});
+    this.accessToken,
+    this.tokenType,
+    this.refreshToken,
+    this.expiresIn,
+    this.user,
+  });
 
-  LoginRes.fromJson(dynamic json) {
+  LoginRes.fromJson(Map<String, dynamic> json) {
     accessToken = json['accessToken'];
     tokenType = json['tokenType'];
     refreshToken = json['refreshToken'];
     expiresIn = json['expiresIn'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
+
   String? accessToken;
   String? tokenType;
   String? refreshToken;
@@ -33,4 +35,6 @@ class LoginRes {
     return map;
   }
 
+  // Additional method to check if the login is successful
+  bool get isAuthenticated => accessToken != null && accessToken!.isNotEmpty;
 }

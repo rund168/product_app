@@ -15,18 +15,19 @@ class LoginRepository {
     return LoginRes.fromJson(response);
   }
 
+
   Future<void> saveUserLocal(LoginRes data) async {
     var storage = GetStorage();
     storage.write("USER_KEY", data.toJson());
   }
 
   Future<LoginRes> getUserLocal() async {
-    LoginRes response = LoginRes();
     var storage = GetStorage();
     var user = storage.read("USER_KEY");
     if (user != null) {
-      response = LoginRes.fromJson(user);
+      return LoginRes.fromJson(user);  // Deserialize the user data into the LoginRes model
     }
-    return response;
+    return LoginRes();  // Return an empty user if no data is found
   }
+
 }

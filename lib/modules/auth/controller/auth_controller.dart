@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:product_app/data/app_exceptions.dart';
-import 'package:product_app/main.dart';
 import 'package:product_app/models/auth/Login_request.dart';
-import 'package:product_app/repository/auth_repository.dart';
+import 'package:product_app/repository/post/login_repository.dart';
+import 'package:product_app/routes/app_routes.dart';
 
 class AuthController extends GetxController {
   var usernameController = TextEditingController().obs;
   var passwordController = TextEditingController().obs;
   var loadingLogin = false.obs;
-  var authRepository = AuthRepository();
+  var _loginRepository = LoginRepository();
 
   Future<void> login() async {
     if (usernameController.value.text.isEmpty) {
@@ -22,12 +22,12 @@ class AuthController extends GetxController {
     }
     loadingLogin(true);
     try {
-      var req = LoginRequest(
+      var response =await _loginRepository.login(
         username: usernameController.value.text,
         password: passwordController.value.text,
       );
-      await authRepository.login(req);
-      Get.back(result: true);
+      Get.offAllNamed(RouteName.postSplash);
+      _loginRepository.saveUserLocal(response);
     } on UnAuthorization {
       Get.snackbar("Error", "Your Username and Password incorrect!");
     } catch (e) {
@@ -39,5 +39,7 @@ class AuthController extends GetxController {
 
   // emilys
   // emilyspass
+  // 0962505045
+  // 123456
 
 }
